@@ -38,12 +38,13 @@ class ConnectFour : Fragment() {
         val view = inflater.inflate(R.layout.fragment_connect_four, container, false)
 
         val resetButton = view.findViewById<Button>(R.id.resetButton)
-        resetButton?.isEnabled = false
+        resetButton?.isEnabled = false // Reset button is disabled on start
 
         sharedViewModel.text.observe(viewLifecycleOwner) { name ->
-            view.findViewById<TextView>(R.id.greetingText)?.text = "Hello, $name!"
+            view.findViewById<TextView>(R.id.greetingText)?.text = "Hello, $name!" // Greets the player at the top of the screen using user inputted name
         }
 
+        // List of all button IDs for selectable squares on grid
         val buttonsIds = listOf(
             R.id.imageButton0,
             R.id.imageButton1,
@@ -81,13 +82,14 @@ class ConnectFour : Fragment() {
             R.id.imageButton33,
             R.id.imageButton34,
             R.id.imageButton35
-        ) // Add all your button IDs here
+        )
         buttonsIds.forEach { buttonId ->
             view.findViewById<ImageButton>(buttonId)?.setOnClickListener { buttonView ->
                 if (gameActive && buttonId !in selectedSquares) {
                     buttonView.setBackgroundResource(R.drawable.button_outline_red)
                     userSelectedSquares.add(buttonId)
                     selectedSquares.add(buttonId)
+                    // Checks for win on the user's side
                     if (checkForWin(userSelectedSquares)) {
                         gameActive = false
                         setButtonsClickable(view, false)
@@ -105,12 +107,13 @@ class ConnectFour : Fragment() {
             }
         }
 
-
+        // Sets on click reset logic for reset board button
         view.findViewById<Button>(R.id.resetButton)?.setOnClickListener {
             buttonsIds.forEach { buttonIds ->
                 view.findViewById<ImageButton>(buttonIds)
                     ?.setBackgroundResource(R.drawable.button_outline)
             }
+            // clears board
             userSelectedSquares.clear()
             computerSelectedSquares.clear()
             selectedSquares.clear()
@@ -121,7 +124,6 @@ class ConnectFour : Fragment() {
 
         return view
     }
-
     private fun setButtonsClickable(view: View, clickable: Boolean) {
         val buttonsIds = listOf(
             R.id.imageButton0,
@@ -160,12 +162,12 @@ class ConnectFour : Fragment() {
             R.id.imageButton28,
             R.id.imageButton27,
             R.id.imageButton34
-        ) // List of your button IDs again
+        )
         buttonsIds.forEach { buttonId ->
             view.findViewById<ImageButton>(buttonId)?.isEnabled = clickable
         }
     }
-
+    // Logic to make the computer select squares on the board; also updates turn status for the game
     private fun computerMove(buttonsIds: List<Int>, view: View, onMoveCompleted: () -> Unit) {
         if (!gameActive) return
         playerTurn = false
@@ -196,9 +198,9 @@ class ConnectFour : Fragment() {
                     }
                 }
             }
-        }, 2000) // Delay for 2 seconds to simulate computer thinking
+        }, 2000) // Delay for 2 seconds to simulate computer "thinking"
     }
-
+    // Updates message for whos turn it is
     private fun updateTurnStatus(winner: String? = null) {
         val turnStatusTextView = view?.findViewById<TextView>(R.id.turnStatus)
         turnStatusTextView?.text = when (winner) {
@@ -208,7 +210,7 @@ class ConnectFour : Fragment() {
             else -> "Draw"
         }
     }
-
+    // All possible win combinations on board
     private fun checkForWin(selectedButtonIds: Set<Int>): Boolean {
         val winPatterns = listOf(
             // Horizontal lines
@@ -272,15 +274,14 @@ class ConnectFour : Fragment() {
         )
         val winDetected = winPatterns.any { pattern -> selectedButtonIds.containsAll(pattern) }
 
+        // If a win is detected; change turn status message and set the game state
         if (winDetected) {
             val winner =
                 if (userSelectedSquares.containsAll(selectedButtonIds)) "player" else "computer"
             updateTurnStatus(winner)
             gameActive = false
             view?.findViewById<Button>(R.id.resetButton)?.isEnabled = true
-
         }
-
         return winDetected
     }
 }
