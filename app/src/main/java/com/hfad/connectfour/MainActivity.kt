@@ -1,3 +1,10 @@
+/**
+ * Main Activity Fragment
+ * Main activity for the app
+ * @author jubck
+ * @date 2/24/2024
+ */
+
 package com.hfad.connectfour
 
 import androidx.appcompat.app.AppCompatActivity

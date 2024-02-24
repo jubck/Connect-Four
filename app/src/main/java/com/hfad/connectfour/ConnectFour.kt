@@ -1,3 +1,10 @@
+/**
+ * Connect Four Fragment
+ * Includes game logic and usability for buttons.
+ * @author jubck
+ * @date 2/24/2024
+ */
+
 package com.hfad.connectfour
 
 import android.os.Bundle

@@ -1,3 +1,11 @@
+/**
+ * Home Fragment
+ * Home Fragment for the app; opens when user opens the app.
+ * Allows for navigation to connect four game.
+ * @author jubck
+ * @date 2/24/2024
+ */
+
 package com.hfad.connectfour
 
 import android.os.Bundle
